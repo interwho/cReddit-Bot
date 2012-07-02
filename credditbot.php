@@ -66,6 +66,7 @@ function rateUser($post,$id) {
 	$acctage = $response->{'created'};
 	$karma = $response->{'link_karma'};
 	$karma = $karma + $response->{'comment_karma'};
+	$acctage = time_ago($acctage);
 	//Search Username And Get Variables
 	$response = curlGet("http://www.reddit.com/r/Loans/search.xml?syntax=cloudsearch&q=author%3A%27$username%27&restrict_sr=on&sort=new");
 	$req = substr_count($response, '<title>[REQ]');	
@@ -79,7 +80,7 @@ function rateUser($post,$id) {
 	//Add The Comment
 	$urltopost = "https://ssl.reddit.com/api/login/cRedditBot";
 	$datatopost = array (
-		"user" => "USERNAME",
+		"user" => "cRedditBot",
 		"passwd" => "PASSWORD",
 		"api_type" => "json",
 	);
@@ -97,8 +98,7 @@ function rateUser($post,$id) {
 	$cookie = urlencode($cookie);
 	$idl = $id;
 	$id = 't3_'.$id;
-	$acctage = time_ago($acctage);
-	$message = "Stats for **[$username](http://www.reddit.com/r/Random_Acts_Of_Pizza/search?q=author%3A%27$username%27&restrict_sr=on)** on RAoP\n\n
+	$message = "Stats for **[$username](http://www.reddit.com/r/Random_Acts_Of_Pizza/search?q=author%3A%27$username%27&restrict_sr=on)** on r/Loans\n\n
 ---------------------------------------\n\n
 * [$req Loans Requested](/req_)
 * [$granted Loans Granted To Others](/offer_)
@@ -109,7 +109,7 @@ function rateUser($post,$id) {
 ---------------------------------------\n\n
 [report link](http://www.reddit.com/message/compose?to=%2Fr%2FLoans&subject=cRedditBot%20Link%20Reported%20-%20".urlencode('http://redd.it/'.$idl).") or [send feedback](http://www.reddit.com/message/compose?to=interwhos&subject=cRedditBot%20Feedback!)\n\n
 ---------------------------------------\n\n
-Hi! I'm cRedditBot 2.0.\n\n
+[Hi! I'm cRedditBot 2.0.](/meta_)\n\n
 ---------------------------------------";
 	$urltopost = "http://www.reddit.com/api/comment";
 	$datatopost = array(
