@@ -66,7 +66,6 @@ function rateUser($post,$id) {
 	$acctage = $response->{'created'};
 	$karma = $response->{'link_karma'};
 	$karma = $karma + $response->{'comment_karma'};
-	$acctage = strftime("%B %d %Y %r",$acctage);
 	//Search Username And Get Variables
 	$response = curlGet("http://www.reddit.com/r/Loans/search.xml?syntax=cloudsearch&q=author%3A%27$username%27&restrict_sr=on&sort=new");
 	$req = substr_count($response, '<title>[REQ]');	
