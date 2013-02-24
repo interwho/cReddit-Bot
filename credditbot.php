@@ -77,9 +77,9 @@ function rateUser($post,$id) {
 	$granted = $granted + substr_count($response, '<TITLE>[UNPAID]');
 	$gunpaid = substr_count($response, '<TITLE>[UNPAID]');
 	//Search For Paid & Unpaid Loans
-	$response = strtoupper(curlGet("http://www.reddit.com/r/Loans/search.xml?syntax=cloudsearch&q=title:$username+%5BPAID%5D&restrict_sr=on&sort=new"));
+	$response = strtoupper(curlGet("http://www.reddit.com/r/Loans/search.xml?q=title%3A$username+%5BPAID%5D&restrict_sr=on&sort=new"));
 	$paid = substr_count($response, '<TITLE>[PAID]');
-	$response = strtoupper(curlGet("http://www.reddit.com/r/Loans/search.xml?syntax=cloudsearch&q=title:$username+%5BUNPAID%5D&restrict_sr=on&sort=new"));
+	$response = strtoupper(curlGet("http://www.reddit.com/r/Loans/search.xml?q=title%3A$username+%5BUNPAID%5D&restrict_sr=on&sort=new"));
 	$unpaid = substr_count($response, '<TITLE>[UNPAID]');
 	//Add The Comment
 	$urltopost = "https://ssl.reddit.com/api/login/cRedditBot";
