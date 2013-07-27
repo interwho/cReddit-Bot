@@ -68,6 +68,16 @@ function rateUser($post,$id) {
 	$karma = $karma + $response->{'comment_karma'};
 	$acctage = time_ago($acctage);
 	//Search Username And Get Variables
+	//BADKARMA CHECK
+	$response = curlGet("http://www.reddit.com/r/badkarma/search.xml?q=title%3A$username&restrict_sr=on&sort=relevance&t=all");
+	$response = strtoupper($response);
+	$bad = substr_count($response, '<TITLE>[BAD]');
+	if($bad > 0) {
+		$bad = "\n[WARNING: THIS USER MAY HAVE BEEN REPORTED IN R/BADKARMA!](/unpaid_) ([link](http://www.reddit.com/r/badkarma/search?q=title%3A$username&restrict_sr=on&sort=relevance&t=all))\n\n";
+	} else {
+		$bad = "";
+	}
+	//Main Stat Checks
 	$response = curlGet("http://www.reddit.com/r/Loans/search.xml?syntax=cloudsearch&q=author%3A%27$username%27&restrict_sr=on&sort=new");
 	$response = strtoupper($response);
 	$req = substr_count($response, '<TITLE>[REQ]');
@@ -115,7 +125,7 @@ function rateUser($post,$id) {
 **Lender Stats**\n\n
 * [$granted Loan(s) Granted To Others](/offer_)
 * [$gpaid Loan(s) Paid Back To This Redditor](/paid_)
-* [$gunpaid Loan(s) NOT Paid Back To This Redditor](/unpaid_)\n\n
+* [$gunpaid Loan(s) NOT Paid Back To This Redditor](/unpaid_)\n\n$bad
 ---------------------------------------\n\n
 [$acctage - total karma: $karma](/meta_)\n\n
 ---------------------------------------\n\n
@@ -123,7 +133,7 @@ function rateUser($post,$id) {
 ---------------------------------------\n\n
 [Want to start lending? Read this first!](http://www.reddit.com/r/Loans/comments/19y46n/meta_everything_i_can_think_of_to_give_a_first/)\n\n
 ---------------------------------------\n\n
-[Hi! I'm the cRedditBot. I'm here to help protect the lenders that make this place great. Please keep in mind that I AM a bot, so you won't get a response if you PM me.](/meta_)\n\n
+[Hi! I'm the cRedditBot stats robot. I'm here to help protect the lenders that make this place great.](/meta_)\n\n
 ---------------------------------------";
 	$urltopost = "http://www.reddit.com/api/comment";
 	$datatopost = array(
