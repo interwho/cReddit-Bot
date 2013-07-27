@@ -109,9 +109,9 @@ function rateUser($post,$id) {
 	$message = "Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$username%27&restrict_sr=on)** on r/Loans\n\n
 ---------------------------------------\n\n
 **Requester Stats**\n\n
-* [$req Loan(s) Requested](/req_)
-* [$paid Loan(s) Paid Back By This Redditor](/paid_)
-* [$unpaid Loan(s) NOT Paid Back By This Redditor](/unpaid_)\n\n
+* [$req Loan(s) Requested](/req_) ([view all posts in r/loans by this user](http://www.reddit.com/r/Loans/search?syntax=cloudsearch&q=author%3A%27$username%27&restrict_sr=on&sort=new))
+* [$paid Loan(s) Paid Back By This Redditor](/paid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A$username+%5BPAID%5D&restrict_sr=on&sort=new))
+* [$unpaid Loan(s) NOT Paid Back By This Redditor](/unpaid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A$username+%5BUNPAID%5D&restrict_sr=on&sort=new))\n\n
 **Lender Stats**\n\n
 * [$granted Loan(s) Granted To Others](/offer_)
 * [$gpaid Loan(s) Paid Back To This Redditor](/paid_)
@@ -121,7 +121,7 @@ function rateUser($post,$id) {
 ---------------------------------------\n\n
 [report link](http://www.reddit.com/message/compose?to=%2Fr%2FLoans&subject=cRedditBot%20Link%20Reported%20-%20".urlencode('http://redd.it/'.$idl).") or [send feedback](http://www.reddit.com/message/compose?to=interwhos&subject=cRedditBot%20Feedback!)\n\n
 ---------------------------------------\n\n
-[Important Info For Lenders Regarding Scams](http://www.reddit.com/r/Loans/comments/14imky/meta_double_loans_to_the_same_scammer/)\n\n
+[Want to start lending? Read this first!](http://www.reddit.com/r/Loans/comments/19y46n/meta_everything_i_can_think_of_to_give_a_first/)\n\n
 ---------------------------------------\n\n
 [Hi! I'm the cRedditBot. I'm here to help protect the lenders that make this place great. Please keep in mind that I AM a bot, so you won't get a response if you PM me.](/meta_)\n\n
 ---------------------------------------";
