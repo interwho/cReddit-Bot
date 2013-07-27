@@ -133,7 +133,7 @@ function rateUser($post,$id) {
 ---------------------------------------\n\n
 [Want to start lending? Read this first!](http://www.reddit.com/r/Loans/comments/19y46n/meta_everything_i_can_think_of_to_give_a_first/)\n\n
 ---------------------------------------\n\n
-[Hi! I'm the cRedditBot stats robot. I'm here to help protect the lenders that make this place great.](/meta_)\n\n
+[Hi! I'm the cRedditBot stats robot. Click here for more information about me.](http://www.reddit.com/r/Loans/comments/1j54kp/meta_credditbot_information/)\n\n
 ---------------------------------------";
 	$urltopost = "http://www.reddit.com/api/comment";
 	$datatopost = array(
