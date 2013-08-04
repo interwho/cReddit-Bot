@@ -73,8 +73,11 @@ if(isset($_GET['username'])) {
         $report_search = json_decode(curl_fetch("http://www.reddit.com/r/Loans/search.json?q=title%3A$username+%5BPAID%5D+OR+%5BUNPAID%5D&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         $report_tags = array('unpaid' => 0, 'paid' => 0);
 
-        foreach($report_search['data']['children'] as $submission)
-            $report_tags[strtolower(str_replace(array('[', ']'), '', explode(' ', $submission['data']['title'])[0]))] += 1;
+        foreach($report_search['data']['children'] as $submission) {
+            $tag = explode(' ', $submission['data']['title']);
+            $tag = $tag[0];
+            $report_tags[strtolower(str_replace(array('[', ']'), '', $tag))] += 1;
+        }
 
         $loan_info = array_merge($loan_info, array(
             'requested_paid' => $report_tags['paid'],
