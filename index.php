@@ -57,7 +57,8 @@ if(isset($_GET['username'])) {
         $loan_tags = array('request' => 0, 'req' => 0, 'unpaid' => 0, 'paid' => 0);
 
         foreach($loans_search['data']['children'] as $submission) {
-            $tag = strtolower(str_replace(array('[', ']'), '', explode(' ', $submission['data']['title'])[0]));
+            $tag = strtolower(str_replace(array('[', ']'), '', explode(' ', $submission['data']['title'])));
+            $tag = $tag[0];
             if(isset($loan_tags[$tag])) 
                 $loan_tags[$tag] += 1;
         }
