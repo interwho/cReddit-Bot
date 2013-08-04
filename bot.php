@@ -49,7 +49,7 @@ Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$user
 MESSAGE;
     
     $reddit->post_comment($post_id, $message);
-    # sleep(600);
-    die();
+    
+    sleep(600);
 }
 ?>
