@@ -50,6 +50,6 @@ MESSAGE;
     
     $reddit->post_comment($post_id, $message);
     
-    sleep(600);
+    sleep(600); // TODO: Look at the captcha problem; this COULD cause a comment overlap!
 }
 ?>
