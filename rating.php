@@ -10,7 +10,7 @@ function curl_fetch($url) {
     return $return;
 }
 
-function time_ago($datetime) {
+function time_ago($datetime, $granularity = 2) {
     $difference = time() - $datetime;
     $periods = array(
         'year' => 31536000,
@@ -21,6 +21,8 @@ function time_ago($datetime) {
         'minute' => 60,
         'second' => 1
     );
+    
+    $retval = '';
 
     foreach ($periods as $key => $value) {
         if ($difference >= $value) {
@@ -30,7 +32,9 @@ function time_ago($datetime) {
             $retval .= (($time > 1) ? $key.'s' : $key);
             $granularity--;
         }
-        if ($granularity == '0') { break; }
+        
+        if ($granularity == '0')
+            break;
     }
     
     return $retval;
