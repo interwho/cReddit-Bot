@@ -57,8 +57,8 @@ if(isset($_GET['username'])) {
         $loan_tags = array('request' => 0, 'req' => 0, 'unpaid' => 0, 'paid' => 0);
 
         foreach($loans_search['data']['children'] as $submission) {
-            $tag = strtolower(str_replace(array('[', ']'), '', explode(' ', $submission['data']['title'])));
-            $tag = $tag[0];
+            $tag = str_replace(array('[', ']'), '', explode(' ', $submission['data']['title']));
+            $tag = strtolower($tag[0]);
             if(isset($loan_tags[$tag])) 
                 $loan_tags[$tag] += 1;
         }
@@ -74,9 +74,10 @@ if(isset($_GET['username'])) {
         $report_tags = array('unpaid' => 0, 'paid' => 0);
 
         foreach($report_search['data']['children'] as $submission) {
-            $tag = explode(' ', $submission['data']['title']);
-            $tag = $tag[0];
-            $report_tags[strtolower(str_replace(array('[', ']'), '', $tag))] += 1;
+            $tag = explode(' ', str_replace(array('[', ']'), '', $submission['data']['title']));
+            $tag = strtolower($tag[0]);
+            if(isset($report_tags[$tag])) 
+                $report_tags[$tag] += 1;
         }
 
         $loan_info = array_merge($loan_info, array(
