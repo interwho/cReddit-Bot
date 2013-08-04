@@ -122,6 +122,9 @@ class Reddit
         $account_data = json_decode($login_response, true);
         $account_data = $account_data['json']['data'];
         
+        if(!$account_data)
+            exit('Account login information not valid');
+        
         $this->cookie = 'reddit_session=' . urlencode($account_data['cookie']);
         $this->modhash = $account_data['modhash'];
     }
