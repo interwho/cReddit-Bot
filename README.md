@@ -1,4 +1,4 @@
-A reddit not for compiling information on a users r/loans history.
+A reddit bot for compiling information on a users r/loans history.
 
 Single-file version.
 
