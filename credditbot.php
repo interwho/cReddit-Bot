@@ -4,19 +4,19 @@
 
 class Creddit
 {
-    
-    public function statistics($username) 
+
+    public function statistics($username)
     {
         $user_info = json_decode($this->curl("http://www.reddit.com/user/$username/about.json"), true);
 
         if(isset($user_info['error']))
             return array('error' => $username . ' does not exist on reddit (' . $user_info['error'] . ')');
-        
+
         $user_info = $user_info['data'];
         $user_info['created_human'] = $this->time_ago($user_info['created']);
         $user_info['total_karma'] = $user_info['link_karma'] + $user_info['comment_karma'];
         $user_info['total_karma_human'] = number_format($user_info['link_karma'] + $user_info['comment_karma']);
-        
+
         $bad_karma = json_decode($this->curl("http://www.reddit.com/r/badkarma/search.json?q=title%3A$username&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         if(count($bad_karma['data']['children']) > 0)
             $user_info['bad_karma'] = true;
@@ -27,7 +27,7 @@ class Creddit
         foreach($loans_search['data']['children'] as $submission) {
             $tag = str_replace(array('[', ']'), '', explode(' ', $submission['data']['title']));
             $tag = strtolower($tag[0]);
-            if(isset($loan_tags[$tag])) 
+            if(isset($loan_tags[$tag]))
                 $loan_tags[$tag] += 1;
         }
 
@@ -44,7 +44,7 @@ class Creddit
         foreach($report_search['data']['children'] as $submission) {
             $tag = explode(' ', str_replace(array('[', ']'), '', $submission['data']['title']));
             $tag = strtolower($tag[0]);
-            if(isset($report_tags[$tag])) 
+            if(isset($report_tags[$tag]))
                 $report_tags[$tag] += 1;
         }
 
@@ -52,11 +52,11 @@ class Creddit
             'requested_paid' => $report_tags['paid'],
             'requested_unpaid' => $report_tags['unpaid'],
         ));
-        
+
         return array($loan_info, $user_info);
     }
-    
-    private function curl($url) 
+
+    private function curl($url)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -66,7 +66,7 @@ class Creddit
         curl_close($curl);
         return $return;
     }
-    
+
     private function time_ago($datetime, $granularity = 2)
     {
         $difference = time() - $datetime;
@@ -111,31 +111,31 @@ class Reddit
             "passwd" => $password,
             "api_type" => "json",
 	);
-        
+
 	$ch = curl_init ($login_url);
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $login_data);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_USERAGENT, "r/Loans cRedditBot Bot by u/interwhos");
 	$login_response = curl_exec($ch);
-        
+
         $account_data = json_decode($login_response, true);
         $account_data = $account_data['json']['data'];
-        
+
         if(!$account_data)
             exit('Account login information not valid');
-        
+
         $this->cookie = 'reddit_session=' . urlencode($account_data['cookie']);
         $this->modhash = $account_data['modhash'];
     }
-    
+
     function get_post($id)
     {
         $post_url = 'http://www.reddit.com/r/' . $this->subreddit . '/comments/' . $id . '.json';
         $post_data = $this->curl($post_url);
         return json_decode($post_data, true);
     }
-    
+
     function post_comment($id, $body)
     {
 	$comment_url = "https://ssl.reddit.com/api/comment";
@@ -144,7 +144,7 @@ class Reddit
             "text" => $body,
             "uh" => $this->modhash,
 	);
-        
+
 	$ch = curl_init($comment_url);
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $comment_data);
@@ -154,7 +154,7 @@ class Reddit
 	$return_data = curl_exec($ch);
         return $return_data;
     }
-    
+
     function get_new_posts($subreddit)
     {
         $this->subreddit = $subreddit;
@@ -163,8 +163,8 @@ class Reddit
         $post_list = json_decode($posts, true);
         return $post_list['data']['children'];
     }
-    
-    private function curl($url) 
+
+    private function curl($url)
     {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -174,7 +174,7 @@ class Reddit
         curl_close($curl);
         return $return;
     }
-    
+
 }
 
 // bot.php
@@ -198,10 +198,10 @@ foreach($loans_posts as $post) {
     foreach(array_slice($post, 1) as $comment)
         if($comment['author'] == REDDIT_USERNAME)
             exit('bot account posted already or post by the bot!');
-    
+
     $username = $post_data[0]['data']['children'][0]['data']['author'];
     list($loan_info, $user_info) = $creddit->statistics($username);
-    
+
 $message = <<<MESSAGE
 Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$username%27&restrict_sr=on)** on r/Loans\n\n
 ---------------------------------------\n\n
@@ -214,7 +214,7 @@ Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$user
 * [{$loan_info['granted_paid']} Loan(s) Paid Back To This Redditor](/paid_)
 * [{$loan_info['granted_unpaid']} Loan(s) NOT Paid Back To This Redditor](/unpaid_)\n\n
 ---------------------------------------\n\n
-[{$user_info['created_human']} - total karma: {$user_info['total_karma_human']}](/meta_)\n\n
+[member for: {$user_info['created_human']} - total karma: {$user_info['total_karma_human']}](/meta_)\n\n
 ---------------------------------------\n\n
 [report link](http://www.reddit.com/message/compose?to=%2Fr%2FLoans&subject=cRedditBot%20Link%20Reported%20-%20redd.it/$post_id) or [send feedback](http://www.reddit.com/message/compose?to=interwhos&subject=cRedditBot%20Feedback!)\n\n
 ---------------------------------------\n\n
@@ -223,9 +223,9 @@ Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$user
 [Hi! I'm the cRedditBot stats robot. Click here for more information about me.](http://www.reddit.com/r/Loans/comments/1j54kp/meta_credditbot_information/)\n\n
 ---------------------------------------
 MESSAGE;
-    
+
     $reddit->post_comment($post_id, $message);
-    
+
     sleep(600); // TODO: Look at the captcha problem; this COULD cause a comment overlap!
 }
 ?>
