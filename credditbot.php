@@ -195,9 +195,15 @@ foreach($loans_posts as $post) {
     $post_id = substr($post['data']['name'], 3);
     $post_data = $reddit->get_post($post_id);
 
-    foreach(array_slice($post, 1) as $comment)
-        if($comment['author'] == REDDIT_USERNAME)
-            exit('bot account posted already or post by the bot!');
+    $comments = $post_data[1]['data']['children'];
+
+    if(!empty($comments)) {
+        foreach($comments as $comment) {
+            if(isset($comment['data']['author']) && $comment['data']['author'] == REDDIT_USERNAME) {
+                exit('already commented');
+            }
+        }
+    }
 
     $username = $post_data[0]['data']['children'][0]['data']['author'];
     list($loan_info, $user_info) = $creddit->statistics($username);
