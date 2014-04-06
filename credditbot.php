@@ -17,7 +17,7 @@ class Creddit
         $user_info['total_karma'] = $user_info['link_karma'] + $user_info['comment_karma'];
         $user_info['total_karma_human'] = number_format($user_info['link_karma'] + $user_info['comment_karma']);
 
-        $bad_karma = json_decode($this->curl("http://www.reddit.com/r/badkarma/search.json?q=title%3A$username&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
+        $bad_karma = json_decode($this->curl("http://www.reddit.com/r/badkarma/search.json?q=title%3A%27$username%27&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         if(count($bad_karma['data']['children']) > 0)
             $user_info['bad_karma'] = true;
 
@@ -38,7 +38,7 @@ class Creddit
             'requested' => $loan_tags['req'] + $loan_tags['request'],
         );
 
-        $report_search = json_decode($this->curl("http://www.reddit.com/r/Loans/search.json?q=title%3A$username+%5BPAID%5D+OR+%5BUNPAID%5D&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
+        $report_search = json_decode($this->curl("http://www.reddit.com/r/Loans/search.json?q=title%3A%27$username%27+%5BPAID%5D+OR+%5BUNPAID%5D&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         $report_tags = array('unpaid' => 0, 'paid' => 0);
 
         foreach($report_search['data']['children'] as $submission) {
@@ -105,19 +105,19 @@ class Reddit
 {
     function login($username, $password)
     {
-	$login_url = "https://ssl.reddit.com/api/login/cRedditBot";
-	$login_data = array (
+    $login_url = "https://ssl.reddit.com/api/login/cRedditBot";
+    $login_data = array (
             "user" => $username,
             "passwd" => $password,
             "api_type" => "json",
-	);
+    );
 
-	$ch = curl_init ($login_url);
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $login_data);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_USERAGENT, "r/Loans cRedditBot Bot by u/interwhos");
-	$login_response = curl_exec($ch);
+    $ch = curl_init ($login_url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $login_data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, "r/Loans cRedditBot Bot by u/interwhos");
+    $login_response = curl_exec($ch);
 
         $account_data = json_decode($login_response, true);
         $account_data = $account_data['json']['data'];
@@ -138,20 +138,20 @@ class Reddit
 
     function post_comment($id, $body)
     {
-	$comment_url = "https://ssl.reddit.com/api/comment";
-	$comment_data = array(
+    $comment_url = "https://ssl.reddit.com/api/comment";
+    $comment_data = array(
             "thing_id" => 't3_' . $id,
             "text" => $body,
             "uh" => $this->modhash,
-	);
+    );
 
-	$ch = curl_init($comment_url);
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $comment_data);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_USERAGENT, "r/Loans cRedditBot Bot by u/interwhos");
-	curl_setopt($ch, CURLOPT_COOKIE, $this->cookie);
-	$return_data = curl_exec($ch);
+    $ch = curl_init($comment_url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $comment_data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, "r/Loans cRedditBot Bot by u/interwhos");
+    curl_setopt($ch, CURLOPT_COOKIE, $this->cookie);
+    $return_data = curl_exec($ch);
         return $return_data;
     }
 
@@ -213,8 +213,8 @@ Stats for **[$username](http://www.reddit.com/r/Loans/search?q=author%3A%27$user
 ---------------------------------------\n\n
 **Requester Stats**\n\n
 * [{$loan_info['requested']} Loan(s) Requested](/req_) ([view all posts in r/loans by this user](http://www.reddit.com/r/Loans/search?syntax=cloudsearch&q=author%3A%27$username%27&restrict_sr=on&sort=new))
-* [{$loan_info['requested_paid']} Loan(s) Paid Back By This Redditor](/paid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A$username+%5BPAID%5D&restrict_sr=on&sort=new))
-* [{$loan_info['requested_unpaid']} Loan(s) NOT Paid Back By This Redditor](/unpaid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A$username+%5BUNPAID%5D&restrict_sr=on&sort=new))\n\n
+* [{$loan_info['requested_paid']} Loan(s) Paid Back By This Redditor](/paid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A%27$username%27+%5BPAID%5D&restrict_sr=on&sort=new))
+* [{$loan_info['requested_unpaid']} Loan(s) NOT Paid Back By This Redditor](/unpaid_) ([view](http://www.reddit.com/r/Loans/search?q=title%3A%27$username%27+%5BUNPAID%5D&restrict_sr=on&sort=new))\n\n
 **Lender Stats**\n\n
 * [{$loan_info['granted']} Loan(s) Granted To Others](/offer_)
 * [{$loan_info['granted_paid']} Loan(s) Paid Back To This Redditor](/paid_)

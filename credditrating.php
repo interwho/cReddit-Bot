@@ -17,7 +17,7 @@ class Creddit
         $user_info['total_karma'] = $user_info['link_karma'] + $user_info['comment_karma'];
         $user_info['total_karma_human'] = number_format($user_info['link_karma'] + $user_info['comment_karma']);
         
-        $bad_karma = json_decode($this->curl("http://www.reddit.com/r/badkarma/search.json?q=title%3A$username&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
+        $bad_karma = json_decode($this->curl("http://www.reddit.com/r/badkarma/search.json?q=title%3A%27$username%27&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         if(count($bad_karma['data']['children']) > 0)
             $user_info['bad_karma'] = true;
 
@@ -38,7 +38,7 @@ class Creddit
             'requested' => $loan_tags['req'] + $loan_tags['request'],
         );
 
-        $report_search = json_decode($this->curl("http://www.reddit.com/r/Loans/search.json?q=title%3A$username+%5BPAID%5D+OR+%5BUNPAID%5D&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
+        $report_search = json_decode($this->curl("http://www.reddit.com/r/Loans/search.json?q=title%3A%27$username%27+%5BPAID%5D+OR+%5BUNPAID%5D&restrict_sr=on&sort=relevance&t=all&limit=500"), true);
         $report_tags = array('unpaid' => 0, 'paid' => 0);
 
         foreach($report_search['data']['children'] as $submission) {
@@ -171,18 +171,18 @@ if(isset($_GET['username'])) {
             <?php if($loan_info['requested'] > 0) { ?>
             <ul>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=author:<?php echo $user_info['name']; ?>+title:req+OR+title:request&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=author:%27<?php echo $user_info['name']; ?>%27+title:req+OR+title:request&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['requested']; ?>
                     </a>
                     loans requested
                 </li>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=title:<?php echo $user_info['name']; ?>+PAID&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=title:%27<?php echo $user_info['name']; ?>%27+PAID&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['requested_paid']; ?>
                     </a>
                     loans paid back</li>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=title:<?php echo $user_info['name']; ?>+UNPAID&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=title:%27<?php echo $user_info['name']; ?>%27+UNPAID&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['requested_unpaid']; ?>
                     </a>
                     loans <strong>not</strong> paid back :(</li>
@@ -195,19 +195,19 @@ if(isset($_GET['username'])) {
             <?php if($loan_info['granted'] > 0) { ?>
             <ul>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=author:<?php echo $user_info['name']; ?>+title:PAID+OR+UNPAID&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=author:%27<?php echo $user_info['name']; ?>%27+title:PAID+OR+UNPAID&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['granted']; ?>
                     </a>
                     loans granted to others</li>
                 </li>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=author:<?php echo $user_info['name']; ?>+title:PAID&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=author:%27<?php echo $user_info['name']; ?>%27+title:PAID&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['granted_paid']; ?>
                     </a>
                     loans repaid by others</li>
                 </li>
                 <li>
-                    <a href="http://www.reddit.com/r/Loans/search?q=author:<?php echo $user_info['name']; ?>+title:UNPAID&restrict_sr=on&sort=new&t=all">
+                    <a href="http://www.reddit.com/r/Loans/search?q=author:%27<?php echo $user_info['name']; ?>%27+title:UNPAID&restrict_sr=on&sort=new&t=all">
                         <?php echo $loan_info['granted_unpaid']; ?>
                     </a>
                     loans <strong>not</strong> repaid by others :(</li>
