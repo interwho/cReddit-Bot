@@ -1,6 +1,6 @@
 <?php
 
-// creddit.php
+// credditbot.php
 
 class Creddit
 {
