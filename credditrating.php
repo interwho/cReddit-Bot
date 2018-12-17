@@ -116,7 +116,7 @@ if(isset($_GET['username'])) {
         <meta name="author" content="">
         <style type="text/css">
             body{font-family: Arial, Helvetica, sans-serif; margin: 0px; padding: 0px;}
-            .container{margin: auto; width: 600px;}
+            .container{margin: auto; width: 70%;}
             #header{background-color: #1E90FF; color: #FFF; padding: 10px 0;}
             #header h1{font-size: 22px; font-weight: normal; margin: 10px 0px;}
             #intro p{line-height: 20px;}
